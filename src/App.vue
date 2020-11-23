@@ -19,10 +19,19 @@
     <v-main>
       {{ $vuetify.breakpoint.name }}
 
+      <!--
+      <v-row>
+        <v-row class="divLeft col-2" align="center" justify="center"> gauche </v-row>
+        <v-row class="divMiddle col-8" align="center" justify="center"> milieu </v-row>
+        <v-row class="divRight col-2" align="center" justify="center"> droite </v-row>
+      </v-row>
+      -->
+
       <v-container>
-        <v-row class="pb-8">
-          <v-row >
-            <v-row justify="start" align="center" >
+        <v-container class="">
+
+        <v-row class="pb-8 mx-2">
+            <v-row  align="center" justify="start">
               <v-btn
                 class="mr-2"
                 color="secondary"
@@ -59,15 +68,15 @@
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
             </v-row>
-          </v-row>
           <v-row align="center" justify="end"> {{ totalPercent }}% </v-row>
         </v-row>
+        </v-container>
 
         <transition-group name="rowTransition" tag="">
           <div class="pb-2" v-for="(bar, id) in bars" :key="id">
             <v-row>
               <v-row
-                class="col-3 col-md-2 flex-shrink-0"
+                class="col-3 col-md-2 "
                 justify="center"
                 align="center"
               >
@@ -82,7 +91,7 @@
                 </v-btn>
               </v-row>
               <v-row
-                class="col-9 col-md-10 flex-shrink-1"
+                class="col-9 col-md-10 "
                 justify="center"
                 align="center"
               >
@@ -104,16 +113,24 @@
                 </v-progress-linear>
               </v-row>
             </v-row>
-            <v-row class="" justify="center" align="center">
+
+            <v-row >
+              <v-row
+                class="col-3 col-md-2 "
+                justify="center"
+                align="center"
+              >
+              </v-row>
+                          <v-row class="col-9 col-md-10" justify="center" align="center">
               <v-text-field
-                class="px-4 px-sm-12"
+                class=""
                 type="text"
                 error-count=""
                 placeholder=""
                 label=""
-                prepend-icon="mdi-format-title"
                 v-model="bar.text"
               ></v-text-field>
+            </v-row>
             </v-row>
           </div>
         </transition-group>
