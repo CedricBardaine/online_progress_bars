@@ -20,7 +20,7 @@
       {{ $vuetify.breakpoint.name }}
 
       <v-container>
-        <v-row justify="center">
+        <v-row justify="center" class="pb-4">
           <v-btn
             color="secondary"
             elevation="2"
@@ -40,8 +40,10 @@
         </v-row>
 
         <transition-group name="rowTransition" tag="">
-          <v-row class="d-inline-flex" v-for="(bar, id) in bars" :key="id">
-            <small>{{ bar }}</small>
+          <div class="pb-2" v-for="(bar, id) in bars" :key="id">
+            <v-row>
+
+            <v-row class="col-3 col-md-2  flex-shrink-0" justify="center" align="center">
               <v-btn
                 color="error"
                 elevation="2"
@@ -49,10 +51,12 @@
                 small
                 @click="bars.splice(id, 1)"
               >
-                <v-icon dark> mdi-plus </v-icon>
+                <v-icon dark> mdi-close </v-icon>
               </v-btn>
+            </v-row>
+            <v-row class="  col-9  col-md-10 flex-shrink-1" justify="center" align="center">
               <v-progress-linear
-              class="d-inline-flex"
+                class=" "
                 v-model="bar.percent"
                 height="30"
                 color="blue darken-1"
@@ -67,9 +71,13 @@
                   <strong> {{ Math.ceil(bar.percent) }}%</strong>
                 </template>
               </v-progress-linear>
+            </v-row>
+            </v-row>
+            <v-row justify="center" align="center">
 
             <span>{{ bar.text }}</span>
-          </v-row>
+            </v-row>
+          </div>
         </transition-group>
       </v-container>
     </v-main>
@@ -100,8 +108,7 @@ export default {
       },
     ],
   }),
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
