@@ -20,62 +20,100 @@
       {{ $vuetify.breakpoint.name }}
 
       <v-container>
-        <v-row justify="center" class="pb-4">
-          <v-btn
-            color="secondary"
-            elevation="2"
-            fab
-            @click="
-              bars.push({
-                text: 'test',
-                percent: 0,
-                loading: false,
-                disabled: false,
-                problem: false,
-              })
-            "
-          >
-            <v-icon dark> mdi-plus </v-icon>
-          </v-btn>
+        <v-row class="pb-8">
+          <v-row >
+            <v-row justify="start" align="center" >
+              <v-btn
+                class="mr-2"
+                color="secondary"
+                elevation="2"
+                fab
+                @click="
+                  bars.push({
+                    text: 'test',
+                    percent: 0,
+                    loading: false,
+                    disabled: false,
+                    problem: false,
+                  })
+                "
+              >
+                <v-icon dark> mdi-filter-variant </v-icon>
+              </v-btn>
+
+              <v-btn
+                class="mr-2"
+                color="primary"
+                elevation="2"
+                fab
+                @click="
+                  bars.push({
+                    text: 'test',
+                    percent: 0,
+                    loading: false,
+                    disabled: false,
+                    problem: false,
+                  })
+                "
+              >
+                <v-icon dark> mdi-plus </v-icon>
+              </v-btn>
+            </v-row>
+          </v-row>
+          <v-row align="center" justify="end"> {{ totalPercent }}% </v-row>
         </v-row>
 
         <transition-group name="rowTransition" tag="">
           <div class="pb-2" v-for="(bar, id) in bars" :key="id">
             <v-row>
-
-            <v-row class="col-3 col-md-2  flex-shrink-0" justify="center" align="center">
-              <v-btn
-                color="error"
-                elevation="2"
-                fab
-                small
-                @click="bars.splice(id, 1)"
+              <v-row
+                class="col-3 col-md-2 flex-shrink-0"
+                justify="center"
+                align="center"
               >
-                <v-icon dark> mdi-close </v-icon>
-              </v-btn>
-            </v-row>
-            <v-row class="  col-9  col-md-10 flex-shrink-1" justify="center" align="center">
-              <v-progress-linear
-                class=" "
-                v-model="bar.percent"
-                height="30"
-                color="blue darken-1"
-                background-color="blue lighten-4"
-                rounded
-              >
-                <template
-                  v-slot:default="{
-                    /* value */
-                  }"
+                <v-btn
+                  color="error"
+                  elevation="2"
+                  fab
+                  small
+                  @click="bars.splice(id, 1)"
                 >
-                  <strong> {{ Math.ceil(bar.percent) }}%</strong>
-                </template>
-              </v-progress-linear>
+                  <v-icon dark> mdi-close </v-icon>
+                </v-btn>
+              </v-row>
+              <v-row
+                class="col-9 col-md-10 flex-shrink-1"
+                justify="center"
+                align="center"
+              >
+                <v-progress-linear
+                  class=" "
+                  v-model="bar.percent"
+                  height="30"
+                  color="blue darken-1"
+                  background-color="blue lighten-4"
+                  rounded
+                >
+                  <template
+                    v-slot:default="{
+                      /* value */
+                    }"
+                  >
+                    <strong> {{ Math.floor(bar.percent) }}%</strong>
+                  </template>
+                </v-progress-linear>
+              </v-row>
             </v-row>
-            </v-row>
-            <v-row justify="center" align="center">
-
-            <span>{{ bar.text }}</span>
+            <v-row class="" justify="center" align="center">
+              <v-text-field
+                class="px-4 px-sm-12"
+                type="text"
+                error-count=""
+                placeholder=""
+                label=""
+                prepend-icon="mdi-format-title"
+                v-model="bar.text"
+              ></v-text-field>
             </v-row>
           </div>
         </transition-group>
@@ -108,6 +146,15 @@ export default {
       },
     ],
   }),
+  computed: {
+    totalPercent() {
+      let sumTot = 0;
+      this.bars.forEach((element) => {
+        sumTot += element.percent;
+      });
+      return Math.floor(sumTot / this.bars.length);
+    },
+  },
   methods: {},
 };
 </script>
