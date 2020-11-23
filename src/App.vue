@@ -29,9 +29,8 @@
 
       <v-container>
         <v-container class="">
-
-        <v-row class="pb-8 mx-2">
-            <v-row  align="center" justify="start">
+          <v-row class="pb-8 mx-2">
+            <v-row align="center" justify="start">
               <v-btn
                 class="mr-2"
                 color="secondary"
@@ -42,7 +41,7 @@
                     text: 'test',
                     percent: 0,
                     loading: false,
-                    disabled: false,
+                    paused: false,
                     problem: false,
                   })
                 "
@@ -60,7 +59,7 @@
                     text: 'test',
                     percent: 0,
                     loading: false,
-                    disabled: false,
+                    paused: false,
                     problem: false,
                   })
                 "
@@ -68,18 +67,14 @@
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
             </v-row>
-          <v-row align="center" justify="end"> {{ totalPercent }}% </v-row>
-        </v-row>
+            <v-row align="center" justify="end"> {{ totalPercent }}% </v-row>
+          </v-row>
         </v-container>
 
         <transition-group name="rowTransition" tag="">
           <div class="pb-2" v-for="(bar, id) in bars" :key="id">
             <v-row>
-              <v-row
-                class="col-3 col-md-2 "
-                justify="center"
-                align="center"
-              >
+              <v-row class="col-3" justify="center" align="center">
                 <v-btn
                   color="error"
                   elevation="2"
@@ -90,18 +85,17 @@
                   <v-icon dark> mdi-close </v-icon>
                 </v-btn>
               </v-row>
-              <v-row
-                class="col-9 col-md-10 "
-                justify="center"
-                align="center"
-              >
+              <v-row class="col-6" justify="center" align="center">
                 <v-progress-linear
+                  ref="progressBar"
                   class=" "
-                  v-model="bar.percent"
                   height="30"
-                  color="blue darken-1"
-                  background-color="blue lighten-4"
+                  :color="bar.paused ? 'grey darken-1' : 'blue darken-1'"
+                  :background-color="
+                    bar.paused ? 'grey lighten-4' : 'blue lighten-4'
+                  "
                   rounded
+                  @change="vPLchangement(id, $event)"
                 >
                   <template
                     v-slot:default="{
@@ -112,25 +106,46 @@
                   </template>
                 </v-progress-linear>
               </v-row>
+              <v-row class="col-3" justify="center" align="center">
+                <v-btn
+                  class="mr-1"
+                  :color="bar.percent == 100 ? 'primary' : ''"
+                  :elevation="bar.percent == 100 ? '0' : '2'"
+                  fab
+                  x-small
+                  @click="
+                    bar.percent = 100;
+                    $refs.progressBar[id].internalValue = 100;
+                  "
+                >
+                  <v-icon dark> mdi-check </v-icon>
+                </v-btn>
+                <v-btn
+                  class="mr-1"
+                  :color="bar.paused ? 'primary' : ''"
+                  elevation="2"
+                  fab
+                  x-small
+                  @click="bar.paused = !bar.paused"
+                >
+                  <v-icon dark> mdi-hand-left </v-icon>
+                </v-btn>
+              </v-row>
             </v-row>
 
-            <v-row >
-              <v-row
-                class="col-3 col-md-2 "
-                justify="center"
-                align="center"
-              >
+            <v-row>
+              <v-row class="col-3"></v-row>
+              <v-row class="col-6" justify="center" align="center">
+                <v-text-field
+                  class=""
+                  type="text"
+                  error-count=""
+                  placeholder=""
+                  label=""
+                  v-model="bar.text"
+                ></v-text-field>
               </v-row>
-                          <v-row class="col-9 col-md-10" justify="center" align="center">
-              <v-text-field
-                class=""
-                type="text"
-                error-count=""
-                placeholder=""
-                label=""
-                v-model="bar.text"
-              ></v-text-field>
-            </v-row>
+              <v-row class="col-3"></v-row>
             </v-row>
           </div>
         </transition-group>
@@ -151,14 +166,14 @@ export default {
         text: "test",
         percent: 0,
         loading: false,
-        disabled: false,
+        paused: false,
         problem: false,
       },
       {
         text: "test 2 assez long niveau phrase quoi ",
         percent: 10,
         loading: false,
-        disabled: false,
+        paused: false,
         problem: false,
       },
     ],
@@ -172,7 +187,16 @@ export default {
       return Math.floor(sumTot / this.bars.length);
     },
   },
-  methods: {},
+  methods: {
+    vPLchangement(index, event) {
+      if (!this.bars[index].paused) {
+        this.bars[index].percent = event;
+      } else {
+        this.$refs.progressBar[index].internalValue = this.bars[index].percent;
+      }
+    },
+  },
+  watch: {},
 };
 </script>
 
