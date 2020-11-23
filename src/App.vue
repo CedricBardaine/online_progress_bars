@@ -203,6 +203,7 @@ export default {
   }),
   computed: {
     totalPercent() {
+      if(this.bars.length == 0) return 0 ;
       let sumTot = 0;
       this.bars.forEach((element) => {
         sumTot += element.percent;
