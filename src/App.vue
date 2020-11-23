@@ -75,7 +75,7 @@
 
         <transition-group name="rowTransition" tag="">
           <div class="pb-2" v-for="(bar, id) in bars" :key="id">
-            <v-row>
+            <v-row justify="center" class="">
               <v-row class="col-3" justify="center" align="center">
                 <v-btn
                   color="error"
@@ -155,7 +155,7 @@
               </v-row>
             </v-row>
 
-            <v-row>
+            <v-row justify="center">
               <v-row class="col-3"></v-row>
               <v-row class="col-6" justify="center" align="center">
                 <v-text-field
