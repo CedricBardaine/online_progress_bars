@@ -67,7 +67,9 @@
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
             </v-row>
-            <v-row align="center" justify="end"> {{ totalPercent }}% </v-row>
+            <v-row align="center" justify="end">
+              <h1>{{ totalPercent }}%</h1></v-row
+            >
           </v-row>
         </v-container>
 
@@ -90,9 +92,19 @@
                   ref="progressBar"
                   class=" "
                   height="30"
-                  :color="bar.paused ? 'grey darken-1' : 'blue darken-1'"
+                  :color="
+                    bar.paused
+                      ? 'grey darken-1'
+                      : bar.problem
+                      ? 'red darken-1'
+                      : 'blue darken-1'
+                  "
                   :background-color="
-                    bar.paused ? 'grey lighten-4' : 'blue lighten-4'
+                    bar.paused
+                      ? 'grey lighten-4'
+                      : bar.problem
+                      ? 'red lighten-4'
+                      : 'blue lighten-4'
                   "
                   rounded
                   @change="vPLchangement(id, $event)"
@@ -130,6 +142,16 @@
                 >
                   <v-icon dark> mdi-hand-left </v-icon>
                 </v-btn>
+                <v-btn
+                  class="mr-1"
+                  :color="bar.problem ? 'error' : ''"
+                  elevation="2"
+                  fab
+                  x-small
+                  @click="bar.problem = !bar.problem"
+                >
+                  <v-icon dark> mdi-exclamation </v-icon>
+                </v-btn>
               </v-row>
             </v-row>
 
@@ -143,6 +165,7 @@
                   placeholder=""
                   label=""
                   v-model="bar.text"
+                  dense
                 ></v-text-field>
               </v-row>
               <v-row class="col-3"></v-row>
