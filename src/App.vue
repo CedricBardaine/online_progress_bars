@@ -154,7 +154,7 @@
                   class=""
                   type="text"
                   error-count=""
-                  placeholder=""
+                  placeholder="Nom de tâche"
                   label=""
                   v-model="bar.text"
                   dense
@@ -178,15 +178,8 @@ export default {
   data: () => ({
     bars: [
       {
-        text: "test",
+        text: "",
         percent: 0,
-        loading: false,
-        paused: false,
-        problem: false,
-      },
-      {
-        text: "test 2 assez long niveau phrase quoi ",
-        percent: 10,
         loading: false,
         paused: false,
         problem: false,
