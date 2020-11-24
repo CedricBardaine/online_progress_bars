@@ -36,15 +36,7 @@
                 color="secondary"
                 elevation="2"
                 fab
-                @click="
-                  bars.push({
-                    text: 'test',
-                    percent: 0,
-                    loading: false,
-                    paused: false,
-                    problem: false,
-                  })
-                "
+                @click="sortById()"
               >
                 <v-icon dark> mdi-filter-variant </v-icon>
               </v-btn>
@@ -127,7 +119,7 @@
                   x-small
                   @click="
                     bar.percent = 100;
-                    $refs.progressBar[id].internalValue = 100;
+                    $refs.progressBar[id].internalLazyValue = 100;
                   "
                 >
                   <v-icon dark> mdi-check </v-icon>
@@ -203,7 +195,7 @@ export default {
   }),
   computed: {
     totalPercent() {
-      if(this.bars.length == 0) return 0 ;
+      if (this.bars.length == 0) return 0;
       let sumTot = 0;
       this.bars.forEach((element) => {
         sumTot += element.percent;
@@ -215,8 +207,33 @@ export default {
     vPLchangement(index, event) {
       if (!this.bars[index].paused) {
         this.bars[index].percent = event;
+        this.$refs.progressBar[index].internalLazyValue = event;
       } else {
-        this.$refs.progressBar[index].internalValue = this.bars[index].percent;
+        // this.$refs.progressBar[index].internalLazyValue = this.bars[index].percent;
+      }
+
+      this.updateVPL();
+    },
+
+    displayAllBars() {
+      this.bars.forEach((element) => {
+        console.log(element.percent);
+      });
+    },
+
+    sortById() {
+      console.log("sort");
+      this.bars = this.bars.sort((e1, e2) => {
+        if (e1.percent > e2.percent) return -1;
+        else return 1;
+      });
+
+      this.updateVPL();
+    },
+
+    updateVPL() {
+      for (let i = 0; i < this.bars.length; i++) {
+        this.$refs.progressBar[i].internalLazyValue = this.bars[i].percent;
       }
     },
   },
