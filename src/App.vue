@@ -51,7 +51,7 @@
                 class="mr-2"
                 color="primary"
                 elevation="2"
-                fab
+
                 @click="
                   addBar();
                   sorted = '';
