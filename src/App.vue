@@ -35,10 +35,21 @@
                 class="mr-2"
                 color="secondary"
                 elevation="2"
-                fab
-                @click="sortById()"
+                @click="chooseSort()"
               >
                 <v-icon dark> mdi-filter-variant </v-icon>
+                <span v-show="sorted == 'text'">
+                  : <v-icon>mdi-format-title</v-icon></span
+                >
+                <span v-show="sorted == 'percent'">
+                  : <v-icon>mdi-percent</v-icon></span
+                >
+                <span v-show="sorted == 'problem'">
+                  : <v-icon>mdi-exclamation-thick</v-icon></span
+                >
+                <span v-show="sorted == ''">
+                  : <v-icon> mdi-help </v-icon></span
+                >
               </v-btn>
 
               <v-btn
@@ -46,15 +57,7 @@
                 color="primary"
                 elevation="2"
                 fab
-                @click="
-                  bars.push({
-                    text: 'test',
-                    percent: 0,
-                    loading: false,
-                    paused: false,
-                    problem: false,
-                  })
-                "
+                @click="addBar() ; sorted=''"
               >
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
@@ -99,7 +102,7 @@
                       : 'blue lighten-4'
                   "
                   rounded
-                  @change="vPLchangement(id, $event)"
+                  @change="vPLchangement(id, $event) ; sorted=''"
                 >
                   <template
                     v-slot:default="{
@@ -120,6 +123,7 @@
                   @click="
                     bar.percent = 100;
                     $refs.progressBar[id].internalLazyValue = 100;
+                    ; sorted=''
                   "
                 >
                   <v-icon dark> mdi-check </v-icon>
@@ -140,7 +144,7 @@
                   elevation="2"
                   fab
                   x-small
-                  @click="bar.problem = !bar.problem"
+                  @click="bar.problem = !bar.problem ; sorted=''"
                 >
                   <v-icon dark> mdi-exclamation </v-icon>
                 </v-btn>
@@ -158,6 +162,7 @@
                   label=""
                   v-model="bar.text"
                   dense
+                  @keydown="sorted=''"
                 ></v-text-field>
               </v-row>
               <v-row class="col-3"></v-row>
@@ -185,6 +190,7 @@ export default {
         problem: false,
       },
     ],
+    sorted: "", // 'percent', 'text', 'problem'
   }),
   computed: {
     totalPercent() {
@@ -197,6 +203,16 @@ export default {
     },
   },
   methods: {
+    addBar() {
+      this.bars.push({
+        text: "test",
+        percent: 0,
+        loading: false,
+        paused: false,
+        problem: false,
+      });
+      this.sorted = "";
+    },
     vPLchangement(index, event) {
       if (!this.bars[index].paused) {
         this.bars[index].percent = event;
@@ -214,14 +230,51 @@ export default {
       });
     },
 
-    sortById() {
-      console.log("sort");
+    sortByPercent() {
       this.bars = this.bars.sort((e1, e2) => {
         if (e1.percent > e2.percent) return -1;
         else return 1;
       });
-
+      this.sorted = "percent";
       this.updateVPL();
+    },
+    sortByText() {
+      this.bars = this.bars.sort((e1, e2) => {
+        if (e1.text < e2.text) return -1;
+        else return 1;
+      });
+      this.sorted = "text";
+      this.updateVPL();
+    },
+    sortByProblem() {
+      this.bars = this.bars.sort((e1, e2) => {
+        Object.values(e2);
+        if (e1.problem) return -1;
+        else return 1;
+      });
+      this.sorted = "problem";
+      this.updateVPL();
+    },
+
+    chooseSort() {
+      switch (this.sorted) {
+        case "percent":
+          // console.log("text sort");
+          this.sortByText();
+          break;
+        case "text":
+          // console.log("problem sort");
+          this.sortByProblem();
+          break;
+        case "problem":
+          // console.log("% sort");
+          this.sortByPercent();
+          break;
+        default:
+          // console.log("% sort (default");
+          this.sortByPercent();
+          break;
+      }
     },
 
     updateVPL() {
