@@ -38,18 +38,13 @@
                 @click="chooseSort()"
               >
                 <v-icon dark> mdi-filter-variant </v-icon>
-                <span v-show="sorted == 'text'">
-                  : <v-icon>mdi-format-title</v-icon></span
+                <span class="mx-1"> : </span>
+                <v-icon v-show="sorted == 'text'">mdi-format-title</v-icon>
+                <v-icon v-show="sorted == 'percent'">mdi-percent</v-icon>
+                <v-icon v-show="sorted == 'problem'"
+                  >mdi-exclamation-thick</v-icon
                 >
-                <span v-show="sorted == 'percent'">
-                  : <v-icon>mdi-percent</v-icon></span
-                >
-                <span v-show="sorted == 'problem'">
-                  : <v-icon>mdi-exclamation-thick</v-icon></span
-                >
-                <span v-show="sorted == ''">
-                  : <v-icon> mdi-help </v-icon></span
-                >
+                <v-icon v-show="sorted == ''"> mdi-help </v-icon>
               </v-btn>
 
               <v-btn
@@ -57,7 +52,10 @@
                 color="primary"
                 elevation="2"
                 fab
-                @click="addBar() ; sorted=''"
+                @click="
+                  addBar();
+                  sorted = '';
+                "
               >
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
@@ -102,7 +100,10 @@
                       : 'blue lighten-4'
                   "
                   rounded
-                  @change="vPLchangement(id, $event) ; sorted=''"
+                  @change="
+                    vPLchangement(id, $event);
+                    sorted = '';
+                  "
                 >
                   <template
                     v-slot:default="{
@@ -123,7 +124,7 @@
                   @click="
                     bar.percent = 100;
                     $refs.progressBar[id].internalLazyValue = 100;
-                    ; sorted=''
+                    sorted = '';
                   "
                 >
                   <v-icon dark> mdi-check </v-icon>
@@ -144,7 +145,10 @@
                   elevation="2"
                   fab
                   x-small
-                  @click="bar.problem = !bar.problem ; sorted=''"
+                  @click="
+                    bar.problem = !bar.problem;
+                    sorted = '';
+                  "
                 >
                   <v-icon dark> mdi-exclamation </v-icon>
                 </v-btn>
@@ -162,7 +166,7 @@
                   label=""
                   v-model="bar.text"
                   dense
-                  @keydown="sorted=''"
+                  @keydown="sorted = ''"
                 ></v-text-field>
               </v-row>
               <v-row class="col-3"></v-row>
