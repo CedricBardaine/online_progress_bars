@@ -51,11 +51,7 @@
                 class="mr-2"
                 color="primary"
                 elevation="2"
-
-                @click="
-                  addBar();
-                  sorted = '';
-                "
+                @click="addBar()"
               >
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
@@ -100,10 +96,7 @@
                       : 'blue lighten-4'
                   "
                   rounded
-                  @change="
-                    vPLchangement(id, $event);
-                    sorted = '';
-                  "
+                  @change="vPLchangement(id, $event)"
                 >
                   <template
                     v-slot:default="{
@@ -124,7 +117,6 @@
                   @click="
                     bar.percent = 100;
                     $refs.progressBar[id].internalLazyValue = 100;
-                    sorted = '';
                   "
                 >
                   <v-icon dark> mdi-check </v-icon>
@@ -145,10 +137,7 @@
                   elevation="2"
                   fab
                   x-small
-                  @click="
-                    bar.problem = !bar.problem;
-                    sorted = '';
-                  "
+                  @click="bar.problem = !bar.problem"
                 >
                   <v-icon dark> mdi-exclamation </v-icon>
                 </v-btn>
@@ -166,7 +155,6 @@
                   label=""
                   v-model="bar.text"
                   dense
-                  @keydown="sorted = ''"
                 ></v-text-field>
               </v-row>
               <v-row class="col-3"></v-row>
@@ -195,6 +183,7 @@ export default {
       },
     ],
     sorted: "", // 'percent', 'text', 'problem'
+    dontReWatch: false, // used to prevent the watch to always set sorted to '' because of the sort fcts.
   }),
   computed: {
     totalPercent() {
@@ -261,6 +250,7 @@ export default {
     },
 
     chooseSort() {
+      this.dontReWatch = true;
       switch (this.sorted) {
         case "percent":
           // console.log("text sort");
@@ -287,7 +277,25 @@ export default {
       }
     },
   },
-  watch: {},
+  watch: {
+    bars: {
+      handler: function (newVal, oldVal) {
+        // TODO : delete clg
+        console.log(
+          "CHANGE!",
+          JSON.parse(JSON.stringify(oldVal)) !=
+            JSON.parse(JSON.stringify(newVal))
+        );
+
+        if (this.dontReWatch) {
+          this.dontReWatch = false;
+        } else {
+          this.sorted = "";
+        }
+      },
+      deep: true,
+    },
+  },
 };
 </script>
 
