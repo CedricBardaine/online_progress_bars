@@ -9,7 +9,6 @@
       -->
 
   <v-container>
-    <!-- // TODO: display valert on url copy -->
     <v-container class="">
       <v-row class="pb-8 mx-2">
         <v-row align="center" justify="start">
@@ -40,6 +39,9 @@
                 path: '',
                 query: { data: JSON.stringify(bars) },
               });
+              displayMsg(
+                'Les données sont enregistrées dans l\'URL ! Vous pouvez maintenant le partager ou l\'enregistrer dans vos favoris.'
+              );
             "
           >
             <v-icon dark> mdi-content-save </v-icon>
@@ -151,6 +153,18 @@
         </v-row>
       </div>
     </transition-group>
+    <v-alert
+      id="idAlert"
+      color="secondary"
+      dark
+      justify="center"
+      :value="!!alertMsg"
+      icon="mdi-information-outline"
+      transition="slide-x-transition"
+      style="position: fixed; z-index: 9000; bottom: 0"
+    >
+      {{ alertMsg }}
+    </v-alert>
   </v-container>
 </template>
 
@@ -173,6 +187,8 @@ export default {
     ],
     sorted: "", // 'percent', 'text', 'problem'
     dontReWatch: false, // used to prevent the watch to always set sorted to '' because of the sort fcts.
+    alertMsg: "",
+    alertTimer: {},
   }),
   mounted() {
     let self = this;
@@ -288,6 +304,17 @@ export default {
         this.$refs.progressBar[i].internalLazyValue = this.bars[i].percent;
       }
     },
+
+    /**
+     * @param {String} aMsg
+     */
+    displayMsg(aMsg) {
+      this.alertMsg = aMsg;
+      clearTimeout(this.alertTimer);
+      this.alertTimer = setTimeout(() => {
+        this.alertMsg = "";
+      }, 5000);
+    },
   },
   watch: {
     bars: {
@@ -321,5 +348,9 @@ export default {
 }
 .rowTransition-enter, .rowTransition-leave-to /* .rowTransition-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+#idAlert i {
+  align-self: center;
 }
 </style>
