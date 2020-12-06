@@ -1,13 +1,5 @@
 
 <template>
-  <!--
-      <v-row>
-        <v-row class="divLeft col-2" align="center" justify="center"> gauche </v-row>
-        <v-row class="divMiddle col-8" align="center" justify="center"> milieu </v-row>
-        <v-row class="divRight col-2" align="center" justify="center"> droite </v-row>
-      </v-row>
-      -->
-
   <v-container>
     <v-container class="">
       <v-row class="pb-8 mx-2">
@@ -153,6 +145,7 @@
         </v-row>
       </div>
     </transition-group>
+
     <v-alert
       id="idAlert"
       color="secondary"
@@ -185,15 +178,18 @@ export default {
         problem: false,
       },
     ],
+
     sorted: "", // 'percent', 'text', 'problem'
+
     dontReWatch: false, // used to prevent the watch to always set sorted to '' because of the sort fcts.
+
     alertMsg: "",
     alertTimer: {},
   }),
   mounted() {
     let self = this;
 
-    // If there is a query param 'data', it initialise the this.data.
+    // If there is a query param 'data' in the URL, it initialises the this.data.
     if (this.$route.query.data) {
       this.bars = JSON.parse(this.$route.query.data);
     }
