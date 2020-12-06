@@ -9,6 +9,7 @@
       -->
 
   <v-container>
+    <!-- // TODO: display valert on url copy -->
     <v-container class="">
       <v-row class="pb-8 mx-2">
         <v-row align="center" justify="start">
@@ -28,6 +29,20 @@
 
           <v-btn class="mr-2" color="primary" elevation="2" @click="addBar()">
             <v-icon dark> mdi-plus </v-icon>
+          </v-btn>
+
+          <v-btn
+            class="mr-2"
+            color="primary"
+            elevation="2"
+            @click="
+              $router.push({
+                path: '',
+                query: { data: JSON.stringify(bars) },
+              });
+            "
+          >
+            <v-icon dark> mdi-content-save </v-icon>
           </v-btn>
         </v-row>
         <v-row align="center" justify="end">
@@ -158,6 +173,18 @@ export default {
     sorted: "", // 'percent', 'text', 'problem'
     dontReWatch: false, // used to prevent the watch to always set sorted to '' because of the sort fcts.
   }),
+  mounted() {
+    let self = this;
+
+    // If there is a query param 'data', it initialise the this.data.
+    if (this.$route.query.data) {
+      this.bars = JSON.parse(this.$route.query.data);
+    }
+
+    setTimeout(function () {
+      self.updateVPL();
+    }, 100);
+  },
   computed: {
     totalPercent() {
       if (this.bars.length == 0) return 0;
@@ -169,6 +196,20 @@ export default {
     },
   },
   methods: {
+    /**
+     * Create a DOM element and copy it
+     * @see https://stackoverflow.com/a/49618964/13880103
+     */
+    copyFullURLToClipboard() {
+      var dummy = document.createElement("input"),
+        text = window.location.href;
+
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+    },
     addBar() {
       this.bars.push({
         text: "test",
@@ -244,6 +285,9 @@ export default {
       }
     },
 
+    /**
+     * Refresh the VProgressBar component background color.
+     */
     updateVPL() {
       for (let i = 0; i < this.bars.length; i++) {
         this.$refs.progressBar[i].internalLazyValue = this.bars[i].percent;
@@ -252,13 +296,14 @@ export default {
   },
   watch: {
     bars: {
-      handler: function (newVal, oldVal) {
-        // TODO : delete clg
-        console.log(
-          "CHANGE!",
-          JSON.parse(JSON.stringify(oldVal)) !=
-            JSON.parse(JSON.stringify(newVal))
-        );
+      handler: function (/*newVal, oldVal*/) {
+        // console.log(
+        //   "CHANGE!",
+        //   JSON.parse(JSON.stringify(oldVal)) !=
+        //     JSON.parse(JSON.stringify(newVal))
+        // );
+
+        // this.$router.query = JSON.stringify(newVal);
 
         if (this.dontReWatch) {
           this.dontReWatch = false;
