@@ -2,8 +2,8 @@
   <v-app id="app">
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
-        <h1 v-show="!$vuetify.breakpoint.xs">Online Progress bars</h1>
-        <h3 v-show="$vuetify.breakpoint.xs">Online Progress bars</h3>
+        <h1 v-show="!$vuetify.breakpoint.xs">Online Progress Bars</h1>
+        <h3 v-show="$vuetify.breakpoint.xs">Online Progress Bars</h3>
       </div>
 
       <v-spacer></v-spacer>
