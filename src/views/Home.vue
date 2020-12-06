@@ -46,9 +46,9 @@
     </v-container>
 
     <transition-group name="rowTransition" tag="">
-      <div class="pb-2" v-for="(bar, id) in bars" :key="id">
+      <div class="pb-4 pb-md-6" v-for="(bar, id) in bars" :key="id">
         <v-row justify="center" class="">
-          <v-row class="col-3" justify="center" align="center">
+          <v-row class="col-3 py-0" justify="center" align="center">
             <v-btn
               color="error"
               elevation="2"
@@ -59,7 +59,7 @@
               <v-icon dark> mdi-close </v-icon>
             </v-btn>
           </v-row>
-          <v-row class="col-6" justify="center" align="center">
+          <v-row class="col-6 py-0" justify="center" align="center">
             <v-progress-linear
               ref="progressBar"
               class=" "
@@ -90,47 +90,49 @@
               </template>
             </v-progress-linear>
           </v-row>
-          <v-row class="col-3" justify="center" align="center">
-            <v-btn
-              class="mr-1"
-              :color="bar.percent == 100 ? 'primary' : ''"
-              :elevation="bar.percent == 100 ? '0' : '2'"
-              fab
-              x-small
-              :disabled="bar.paused"
-              @click="
-                bar.percent = 100;
-                $refs.progressBar[id].internalLazyValue = 100;
-              "
-            >
-              <v-icon dark> mdi-check </v-icon>
-            </v-btn>
-            <v-btn
-              class="mr-1"
-              :color="bar.paused ? 'primary' : ''"
-              elevation="2"
-              fab
-              x-small
-              @click="bar.paused = !bar.paused"
-            >
-              <v-icon dark> mdi-hand-left </v-icon>
-            </v-btn>
-            <v-btn
-              class="mr-1"
-              :color="bar.problem ? 'error' : ''"
-              elevation="2"
-              fab
-              x-small
-              @click="bar.problem = !bar.problem"
-            >
-              <v-icon dark> mdi-exclamation </v-icon>
-            </v-btn>
+          <v-row class="col-3 py-0" justify="center" align="center">
+            <v-container class="text-center pa-0">
+              <v-btn
+                class="ma-1"
+                :color="bar.percent == 100 ? 'primary' : ''"
+                :elevation="bar.percent == 100 ? '0' : '2'"
+                fab
+                x-small
+                :disabled="bar.paused"
+                @click="
+                  bar.percent = 100;
+                  $refs.progressBar[id].internalLazyValue = 100;
+                "
+              >
+                <v-icon dark> mdi-check </v-icon>
+              </v-btn>
+              <v-btn
+                class="ma-1"
+                :color="bar.paused ? 'primary' : ''"
+                elevation="2"
+                fab
+                x-small
+                @click="bar.paused = !bar.paused"
+              >
+                <v-icon dark> mdi-hand-left </v-icon>
+              </v-btn>
+              <v-btn
+                class="ma-1"
+                :color="bar.problem ? 'error' : ''"
+                elevation="2"
+                fab
+                x-small
+                @click="bar.problem = !bar.problem"
+              >
+                <v-icon dark> mdi-exclamation </v-icon>
+              </v-btn>
+            </v-container>
           </v-row>
         </v-row>
 
         <v-row justify="center">
-          <v-row class="col-3"></v-row>
-          <v-row class="col-6" justify="center" align="center">
+          <v-row class="col-3 py-0"></v-row>
+          <v-row class="col-6 py-0" justify="center" align="center">
             <v-text-field
               class=""
               type="text"
@@ -141,7 +143,7 @@
               dense
             ></v-text-field>
           </v-row>
-          <v-row class="col-3"></v-row>
+          <v-row class="col-3 py-0"></v-row>
         </v-row>
       </div>
     </transition-group>
