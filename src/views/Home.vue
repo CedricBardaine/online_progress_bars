@@ -103,6 +103,7 @@
               :elevation="bar.percent == 100 ? '0' : '2'"
               fab
               x-small
+              :disabled="bar.paused"
               @click="
                 bar.percent = 100;
                 $refs.progressBar[id].internalLazyValue = 100;
@@ -212,7 +213,7 @@ export default {
     },
     addBar() {
       this.bars.push({
-        text: "test",
+        text: "",
         percent: 0,
         loading: false,
         paused: false,
@@ -229,12 +230,6 @@ export default {
       }
 
       this.updateVPL();
-    },
-
-    displayAllBars() {
-      this.bars.forEach((element) => {
-        console.log(element.percent);
-      });
     },
 
     sortByPercent() {
