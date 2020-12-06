@@ -17,8 +17,6 @@
     </v-app-bar>
 
     <v-main>
-      {{ $vuetify.breakpoint.name }}
-
       <router-view />
     </v-main>
   </v-app>

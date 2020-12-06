@@ -6,7 +6,7 @@
         <v-row align="center" justify="start">
           <v-btn
             class="mr-2"
-            color="secondary"
+            :color="!sorted ? 'secondary' : 'primary'"
             elevation="2"
             @click="chooseSort()"
           >
